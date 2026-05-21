@@ -38,7 +38,7 @@ from proxmox_mcp import storage as storage_mod
 from proxmox_mcp.config import MultiConfig
 from proxmox_mcp.multi_client import MultiClient
 
-mcp = FastMCP("proxmox-mcp")
+mcp = FastMCP("homepilot-proxmox-mcp")
 
 client: MultiClient = None  # type: ignore[assignment]
 

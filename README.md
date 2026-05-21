@@ -1,6 +1,8 @@
-# proxmox-mcp
+# homepilot-proxmox-mcp
 
-Python MCP server for Proxmox VE — full API coverage, dual-token auth, SSL handling, node discovery.
+HomePilot MCP server for Proxmox VE — full API coverage, dual-token auth, SSL handling, node discovery.
+
+> **Note:** This package is **not on PyPI**. Install via git clone + editable install (see below).
 
 ## Features
 
@@ -15,7 +17,10 @@ Python MCP server for Proxmox VE — full API coverage, dual-token auth, SSL han
 ## Installation
 
 ```bash
-pip install proxmox-mcp
+git clone https://github.com/mtclab/proxmox-mcp-public.git
+cd proxmox-mcp-public
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
 ```
 
 ## Configuration
@@ -24,7 +29,7 @@ pip install proxmox-mcp
 {
   "mcpServers": {
     "proxmox": {
-      "command": "proxmox-mcp",
+      "command": "homepilot-proxmox-mcp",
       "env": {
         "PROXMOX_URL": "https://pve.example.local:8006",
         "PROXMOX_VERIFY": "false",
@@ -43,10 +48,6 @@ pip install proxmox-mcp
 ## Development
 
 ```bash
-git clone https://github.com/mtclab/proxmox-mcp-public.git
-cd proxmox-mcp
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
 pytest
 ```
 
