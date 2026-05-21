@@ -41,7 +41,7 @@ def _make_env() -> dict[str, str]:
 
 
 def _server_params() -> StdioServerParameters:
-    venv_bin = str(Path(__file__).parent.parent / ".venv" / "bin" / "proxmox-mcp")
+    venv_bin = str(Path(__file__).parent.parent / ".venv" / "bin" / "homepilot-proxmox-mcp")
     return StdioServerParameters(command=venv_bin, args=[], env=_make_env())
 
 
