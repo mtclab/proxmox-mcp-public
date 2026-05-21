@@ -68,6 +68,47 @@ proxmox_mcp/
 ├── storage.py         # Storage content, ISOs
 └── utils.py           # confirm_required, node_resolver, error handling
 ```
+## Multi-Node Support
+
+The server supports multi-node PVE clusters. Configure one or more endpoints:
+
+```json
+{
+  "mcpServers": {
+    "proxmox": {
+      "command": "homepilot-proxmox-mcp",
+      "env": {
+        "PROXMOX_URL": "https://pve.example.local:8006",
+        "PROXMOX_VERIFY": "false",
+        "PROXMOX_MONITOR_TOKEN_ID": "monitor@pam!monitoring",
+        "PROXMOX_MONITOR_TOKEN_SECRET": "",
+        "PROXMOX_ADMIN_TOKEN_ID": "admin@pam!tokenid",
+        "PROXMOX_ADMIN_TOKEN_SECRET": "",
+        "PROXMOX_ALLOW_ELEVATED": "false"
+      }
+    }
+  }
+}
+```
+
+For multi-node clusters, set `PROXMOX_URL` to any cluster node. The server auto-discovers all nodes.
+
+## Deployment
+
+The MCP server runs as a long-running process (stdio or HTTP transport) managed by your agent framework. No Docker container needed.
+
+Key env vars:
+- `PROXMOX_URL` — PVE API endpoint
+- `PROXMOX_MONITOR_TOKEN_ID` / `SECRET` — read-only PVEAuditor token
+- `PROXMOX_ADMIN_TOKEN_ID` / `SECRET` — admin PVEAdmin token
+- `PROXMOX_ALLOW_ELEVATED` — set `true` to enable destructive ops
+- `PROXMOX_DEFAULT_NODE` — default node name (optional)
+- `PROXMOX_VERIFY` — SSL verification (`true`, `false`, or path to CA PEM)
+
+## Integration with Zabbix
+
+PVE nodes can be monitored via the Proxmox API HTTP agent template in Zabbix — no zabbix-agent2 needed on the PVE hosts. The agent stack (database, monitoring, proxy, app, agent hosts) all run zabbix-agent2 with Docker plugin.
+
 ## API References
 
 - **PVE API Viewer**: https://pve.proxmox.com/pve-docs/api-viewer/index.html
