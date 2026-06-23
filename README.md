@@ -21,7 +21,7 @@ The server speaks MCP over **stdio**. Pick whichever is easiest:
 ```bash
 docker run -i --rm \
   -e PROXMOX_URL=https://pve.example.local:8006 -e PROXMOX_VERIFY=false \
-  -e PROXMOX_ADMIN_TOKEN_ID='homepilot@pve!homepilot' -e PROXMOX_ADMIN_TOKEN_SECRET=... \
+  -e PROXMOX_ADMIN_TOKEN_ID='admin@pam!tokenid' -e PROXMOX_ADMIN_TOKEN_SECRET=... \
   ghcr.io/mtclab/proxmox-mcp:latest
 ```
 Or build locally: `docker build -t proxmox-mcp . && docker run -i --rm -e PROXMOX_URL=... proxmox-mcp`
