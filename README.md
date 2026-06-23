@@ -2,7 +2,6 @@
 
 HomePilot MCP server for Proxmox VE — full API coverage, dual-token auth, SSL handling, node discovery.
 
-> **Note:** This package is **not on PyPI**. Install via git clone + editable install (see below).
 
 ## Features
 
@@ -14,13 +13,39 @@ HomePilot MCP server for Proxmox VE — full API coverage, dual-token auth, SSL 
 - **Task tracking** — UPID polling with exitstatus checking
 - **Error aware** — handles PVE 595, SSL mismatch, token permission errors
 
-## Installation
+## Install & run
 
+The server speaks MCP over **stdio**. Pick whichever is easiest:
+
+### Docker — no Python needed
 ```bash
-git clone https://github.com/mtclab/proxmox-mcp-public.git
-cd proxmox-mcp-public
-python -m venv .venv && source .venv/bin/activate
-pip install -e ".[dev]"
+docker run -i --rm \
+  -e PROXMOX_URL=https://pve.example.local:8006 -e PROXMOX_VERIFY=false \
+  -e PROXMOX_ADMIN_TOKEN_ID='admin@pam!tokenid' -e PROXMOX_ADMIN_TOKEN_SECRET=... \
+  ghcr.io/mtclab/proxmox-mcp:latest
+```
+Or build locally: `docker build -t proxmox-mcp . && docker run -i --rm -e PROXMOX_URL=... proxmox-mcp`
+
+### uvx — run without installing (needs [uv](https://docs.astral.sh/uv/))
+```bash
+uvx --from git+https://github.com/mtclab/proxmox-mcp-public homepilot-proxmox-mcp
+```
+
+### pipx — install the command
+```bash
+pipx install git+https://github.com/mtclab/proxmox-mcp-public
+homepilot-proxmox-mcp
+```
+
+### pip
+```bash
+pip install git+https://github.com/mtclab/proxmox-mcp-public
+```
+
+### From source (contributors)
+```bash
+git clone https://github.com/mtclab/proxmox-mcp-public.git && cd proxmox-mcp-public
+python -m venv .venv && source .venv/bin/activate && pip install -e ".[dev]"
 ```
 
 ## Configuration
@@ -43,6 +68,17 @@ pip install -e ".[dev]"
     }
   }
 }
+```
+For the **Docker** image, point the client at `docker` instead of the entry point:
+```json
+{ "mcpServers": { "proxmox": {
+  "command": "docker",
+  "args": ["run","-i","--rm","-e","PROXMOX_URL","-e","PROXMOX_VERIFY",
+    "-e","PROXMOX_ADMIN_TOKEN_ID","-e","PROXMOX_ADMIN_TOKEN_SECRET",
+    "ghcr.io/mtclab/proxmox-mcp:latest"],
+  "env": { "PROXMOX_URL": "https://pve.example.local:8006", "PROXMOX_VERIFY": "false",
+           "PROXMOX_ADMIN_TOKEN_ID": "admin@pam!tokenid", "PROXMOX_ADMIN_TOKEN_SECRET": "" }
+}}}
 ```
 
 ## Development
